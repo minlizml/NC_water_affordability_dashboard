@@ -1,0 +1,291 @@
+library(shiny)
+library(shiny.semantic)
+library(formattable)
+library(tidyverse)
+library(DT)
+
+data_rates <- readRDS("data/crosswalk_rate_ids.rds")
+municipalities <- unique(data_rates$rate_structure) 
+
+# define footer function
+createFooter <- function() {
+  div(class = "footer ui three column grid",
+      div(class = "row",
+          div(class = "column",
+              img(src = "logo.png", class = "footer-logo"),
+              div(class = "footer-contact-info",
+                  div(class = "footer-contact-item",
+                      tags$i(class = "fas fa-map-marker-alt"),
+                      " Knapp-Sanders Building",
+                      tags$br(),
+                      "Campus Box 3330, UNC Chapel Hill",
+                      tags$br(),
+                      "Chapel Hill, NC 27599-3330"
+                  ),
+                  div(class = "footer-contact-item",
+                      tags$i(class = "fas fa-phone"), "T:919 966 5381 F:919 843 2528"
+                  ),
+                  div(class = "footer-contact-item",
+                      tags$i(class = "fas fa-envelope"), " efc@sog.unc.edu"
+                  )
+              )
+          ),
+          div(class = "column",
+              div(class = "footer-follow-container",
+                  div(class = "footer-sub-heading", "Follow us"),
+                  div(
+                    a(href="https://www.facebook.com/UNCEnvironmentalFinanceCenter", img(src="facebook.png", class="footer-social-icon")),
+                    a(href="https://twitter.com/efcatunc", img(src="x.png", class="footer-social-icon")),
+                    a(href="https://www.youtube.com/user/efcunc", img(src="youtube.png", class="footer-social-icon")),
+                    a(href="https://www.linkedin.com/company/unc-environmental-finance-center", img(src="linkedin.png", class="footer-social-icon"))
+                  )
+              )
+          ),
+          div(class = "column",
+              div(class = "footer-sub-heading", "Quick Links"),
+              div(class = "footer-normal-text",
+                  a(href="https://efc.sog.unc.edu/efc-events/", "Event"), br(),
+                  a(href="https://efc.sog.unc.edu/about/", "About"), br(),
+                  a(href="https://efc.sog.unc.edu/blog/",  "Blog"), br(),
+                  a(href="https://efc.sog.unc.edu/resource/", "Resource")
+              )
+          )
+      )
+  )
+}
+
+dashboard_description <- HTML("Welcome to the Water and Wastewater Affordability Assessment Tool Dashboard. This tool helps utility managers evaluate the impact of water rates on customers across different income levels. Features include:<br><br>1. Easy input of location and rates<br>2. Display of key community economic indicators<br>3. Comparison of rate impacts on various income groups<br><br>Explore now to develop equitable water pricing policies that balance financial sustainability with community affordability.")
+
+ui <- semanticPage(
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
+    tags$link(href = "https://fonts.googleapis.com/css2?family=Arsenal&display=swap", rel = "stylesheet"),
+    tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"),
+    tags$link(href = "https://fonts.googleapis.com/css2?family=Arsenal&family=Bebas+Neue&display=swap", rel = "stylesheet"),
+    tags$link(href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap", rel="stylesheet"),
+    tags$link(href="https://fonts.googleapis.com/css2?family=Anton&display=swap", rel="stylesheet"),
+    tags$script(HTML("
+      Shiny.addCustomMessageHandler('updateProgress', function(message) {
+        document.getElementById(message.id).style.width = message.width + '%';
+      });
+    "))
+  ),
+  
+  div(class = "ui top attached menu",
+      img(src = "logo_white.png", class = "ui image"),
+      div(class = "ui tabular menu",
+          a(class = "item active", "Home", `data-tab` = "home"),
+          a(class = "item", "Dashboard", `data-tab` = "dashboard"),
+          a(class = "item", "Learn More", `data-tab` = "contact")
+      )
+  ),
+  
+  div(class = "ui bottom attached segment",
+      div(class = "ui tab active", `data-tab` = "home",
+          div(
+            class = "home-background",
+            div(class = "ui grid",
+                div(class = "row",
+                    div(class = "ten wide column",
+                        div(class = "home-content",
+                            h1("AFFORDABILITY TOOL", class = "big-heading"),
+                            p("Reach your goals with personalized insights, custom budgets, spend tracking, and subscription monitoring—all for free.", class = "normal-text"),
+                            div(class = "button-container",
+                                actionButton("View_Dashboard", "View Dashboard", class = "ui button",
+                                             onclick = "Shiny.setInputValue('activeTab', 'dashboard')"),
+                                tags$a(href = "https://efc.sog.unc.edu/", 
+                                       class = "ui button",
+                                       "View our Website")
+                            )
+                        )
+                    ),
+                    div(class = "six wide column right-content",
+                        h2("We can help you achieve water sustainability!", class = "sustainability-text")
+                    )
+                )
+            ),
+            createFooter()
+          )
+      ),
+      
+      div(class = "ui tab", `data-tab` = "dashboard",
+          # Dashboard page content
+          div(
+            class = "dashboard-container",
+            div(class = "ui one column grid",
+                div(class = "row",
+                    div(class = "column",
+                        h2(class = "ui dashheader", "Dashboard Overview"),
+                        p(class = "dashboard-description", dashboard_description)
+                    )
+                )
+            ),
+            div(class = "ui grid",
+                div(class = "four wide column",
+                    div(class = "ui vertical fluid tabular menu",
+                        a(class = "item active", "Input", `data-tab` = "input"),
+                        a(class = "item", "Socioeconomic Metrics", `data-tab` = "metrics"),
+                        a(class = "item", "Assessment", `data-tab` = "assessment")
+                    )
+                ),
+                div(class = "twelve wide stretched column",
+                    div(class = "ui tab segment active", `data-tab` = "input",
+                        div(class = "ui segment",
+                            div(class = "ui two column grid",
+                                div(class = "column",
+                                    div(class = "input-controls",
+                                        selectInput("select1", "Select 1", choices = municipalities),
+                                        DTOutput("test_table"),
+                                        formattableOutput("rates_table_stats"),
+                                        multiple_radio("radio1", "Radio 1", choices = c("A", "B", "C")),
+                                        multiple_checkbox("checkbox1", "Checkbox 1", choices = c("A", "B", "C"))
+                                    )
+                                ),
+                                div(class = "column",
+                                    div(class = "plot-output",
+                                        plotOutput("plot1", width = "100%", height = "400px")
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    div(class = "ui tab segment", `data-tab` = "metrics",
+                        div(class = "file-upload-container",
+                            div(class = "file-upload-area",
+                                tags$i(class = "cloud upload icon"),
+                                p("Drag & drop files or Browse"),
+                                p(class = "supported-formats", "Supported formats: JPEG, PNG, PDF, Word, PPT"),
+                                fileInput("file1", "Choose File", multiple = TRUE, accept = c(".jpg", ".png", ".pdf", ".doc", ".docx", ".ppt", ".pptx"))
+                            ),
+                            div(class = "file-list",
+                                uiOutput("uploadedFiles")
+                            ),
+                            div(class = "file-upload-progress",
+                                uiOutput("uploadProgress")
+                            ),
+                            actionButton("uploadButton", "UPLOAD FILES", class = "ui primary button")
+                        )
+                    ),
+                    
+                    div(class = "ui tab segment", `data-tab` = "assessment",
+                        div(class = "ui two column grid",
+                            div(class = "column",
+                                actionButton("button1", "Button 1")
+                            ),
+                            div(class = "column",
+                                downloadButton("download1", "Download")
+                            )
+                        )
+                    )
+                )
+            ),
+            createFooter()
+          )
+      ),
+      
+      div(class = "ui tab", `data-tab` = "contact",
+          # Learn More page content
+          div(class = "learn-more-container",
+              div(class = "ui two column stackable middle aligned grid",
+                  div(class = "eight wide column",
+                      div(
+                        class = "article-container",
+                        h3("Resources on Affordability Metrics"),
+                        div(
+                          class = "ui accordion",
+                          div(
+                            class = "title",
+                            tags$i(class = "dropdown icon"),
+                            a(href="https://efc.web.unc.edu/2013/01/09/percent-mhi-indicator-of-affordability-of-residential-rates-using-the-u-s-census-bureaus-median-household-income-data/", "Percent MHI as an Indicator of Affordability of Residential Rates: Using the U.S. Census Bureau's Median Household Income Data")
+                          ),
+                          div(
+                            class = "content",
+                            p("Shadi Eskaf is a senior project director for the Environmental Finance Center at the University of North Carolina at Chapel Hill."),
+                            tags$br(),
+                            p('What is the [national/state/recommended] threshold of affordable rates? Is it 2.5 percent MHI?'),
+                            tags$br(),
+                            p("If I had a dollar for every time I get asked this question, I don't think I'd have to worry about affording my own water and wastewater bill. Percent MHI has become a popular indicator for utilities, agencies, and organizations across the country, and even we use it in our Rates Dashboards. Although different groups have their own unique interpretation of the resulting value, the calculation is relatively standard. One of the two variables needed to calculate this indicator—the Median Household Income (MHI)—is usually obtained from the U.S. Census Bureau and taken on face value. Digging deeper into this variable, however, reveals that it is not as simple as most people consider it to be. Using the Census Bureau's MHI as-is automatically builds in important qualifications into the percent MHI indicator that could significantly affect the interpretation of its value.")
+                          ),
+                          div(
+                            class = "title",
+                            tags$i(class = "dropdown icon"),
+                            a(href="https://efc.web.unc.edu/2012/05/29/the-increasing-need-to-address-customer-affordability/", "The Increasing Need to Address Customer Affordability")
+                          ),
+                          div(
+                            class = "content",
+                            p("Stacey Isaac Berahzer is a Senior Project Director for the Environmental Finance Center at the University of North Carolina, and works from a satellite office in Georgia."),
+                            tags$br(),
+                            p("Water prices are rising faster than any other utility service nationally. Of course, there is good reason for this – the industry has a large backlog of infrastructure needs."),
+                            tags$br(),
+                            p("While options such as public private partnerships represent promising areas for financing this backlog, it is mainly water customers who will be writing monthly checks to pay for these infrastructure projects."),
+                            tags$br(),
+                            p("With all indicators pointing toward a continued increase in water bills, the historic underpricing of water seems to be slowly righting itself. But, with this comes a greater need for utilities to consider the affordability issues of low income customers. Defining customer affordability has been a tough nut to crack. Perhaps the most quoted affordability threshold is 2.5% of median household income (MHI), but this 'rule of thumb' has been criticized for blanketing small pockets of poverty within a census block. On the other hand, the same threshold is cited as sometimes pressuring a water utility to keep rates too low, while many of the utility's customers can easily handle a higher rate. The bottom line is that defining affordability at the national scale is not easy!")
+                          ),
+                          div(
+                            class = "title",
+                            tags$i(class = "dropdown icon"),
+                            a(href="https://efc.web.unc.edu/2014/03/26/affordability-of-government-utility-services/", "Understanding the Financial Position of Households Using the American Community Survey")
+                          ),
+                          div(
+                            class = "content",
+                            p("In previous posts, we have talked about publicly available data on inflationary measures including the Consumer Price Index and the Construction Cost Index as well as on commercial energy use from the US Energy Information Administration (EIA) and the US Census. The US Census also has a rich set of data on the financial position of households within our community. These data are especially relevant and helpful for determining the affordability of government utility services such as water and wastewater rates."),
+                            tags$br(),
+                            p("It used to be that Census data were collected once every ten years, as mandated in the US Constitution. But since the 2000 Census, the federal government now conducts the ongoing annual American Community Survey which provides detailed information on population and housing characteristics and is the basis on which hundreds of billions of federal dollars are distributed to communities."),
+                            tags$br(),
+                            p("For communities with populations of at least 65,000, survey data are collected annually. Areas with populations of 20,000 and above have data collected once every three years, and all areas have data collected at least once every five years.")
+                          )
+                        )
+                      )
+                  ),
+                  div(class = "eight wide column",
+                      div(class = "learn-more-image",
+                          img(src = "learnmore.png", style = "width:85%;")
+                      )
+                  )
+              ),
+              # 引用部分
+              div(class = "quote-container",
+                  div(class = "quote-content",
+                      p('Our mission is to help deliver sustainable, fair, and effective environmental programs and services.')
+                  )
+              ),
+              # contributor part
+              div(class = "contributors-container",
+                  h2("Contributors"),
+                  div(class = "ui two column very relaxed grid",
+                      div(class = "column",
+                          div(class = "contributor",
+                              img(src = "eva.png", class = "contributor-image"),
+                              h3("Eva Ramirez-Flores"),
+                              p("Data Specialist"),
+                              p(tags$i(class = "envelope icon"), "everamif@live.unc.edu")
+                          )
+                      ),
+                      div(class = "column",
+                          div(class = "contributor",
+                              img(src = "ar.png", class = "contributor-image"),
+                              h3("Ahmed Rachid El-Khattabi"),
+                              p("Interim Executive Director"),
+                              p(tags$i(class = "envelope icon"), "arelkhattabi@sog.unc.edu")
+                          )
+                      )
+                  )
+              ),
+              tags$script("
+      $('.ui.accordion').accordion();
+    "),
+              createFooter()
+          )
+      )
+      
+      
+      
+      
+  ),
+  
+  tags$script("
+    $('.ui.tabular.menu .item').tab();
+  ")
+)
+
+

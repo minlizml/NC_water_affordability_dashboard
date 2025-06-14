@@ -1,0 +1,73 @@
+# Define server logic
+server <- function(input, output, session) {
+  
+  #### Bug ####
+  
+  # The code correctly prints the selected municipality
+  observeEvent(input$select1, {
+    
+    print("selected municipality:")
+    print(input$select1)
+    
+  })
+  
+  # The iris df doesn't render
+  output$test_table <- renderDT({
+    
+    iris
+    
+  })
+  
+  # The formattable doesn't render
+  output$rates_table_stats <- renderFormattable({
+    
+    req(input$select1)
+    filtered_data <- subset(data_rates, rate_structure == input$select1)
+    formattable(filtered_data)
+    
+  })
+  
+  
+  
+  
+  
+  
+  # Store uploaded files in a reactive value
+  uploaded_files <- reactiveVal(data.frame(name = character(), size = numeric(), stringsAsFactors = FALSE))
+  
+  # Observe file input and update reactive value
+  observe({
+    req(input$file1)
+    
+    # Update the uploaded files list
+    new_files <- input$file1 %>%
+      mutate(name = name, size = size) %>%
+      select(name, size)
+    
+    # Combine with the existing files
+    all_files <- rbind(uploaded_files(), new_files)
+    uploaded_files(all_files)
+  })
+  
+  # Render uploaded files list
+  output$uploadedFiles <- renderUI({
+    req(uploaded_files())
+    
+    files <- uploaded_files()
+    
+    # Create a list of file names and sizes
+    tagList(
+      lapply(1:nrow(files), function(i) {
+        div(class = "file-item",
+            div(class = "file-icon", tags$i(class = "file outline icon")),
+            div(class = "file-info",
+                div(class = "file-name", files$name[i]),
+                div(class = "file-stats",
+                    span(class = "file-size", paste0(format(files$size[i], big.mark = ","), " bytes"))
+                )
+            )
+        )
+      })
+    )
+  })
+}

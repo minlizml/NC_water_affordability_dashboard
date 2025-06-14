@@ -1,0 +1,506 @@
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    height: 100%;
+}
+
+/* Main content wrapper */
+.main-content {
+    min-height: calc(100vh - 60px - 200px); /* Adjust based on header and footer height */
+    padding: 0;
+}
+
+/* Custom header */
+.custom-header {
+    background-color: #9abddc;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.header-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.header-menu li {
+    margin-left: 20px;
+}
+
+.header-menu a {
+    color: white;
+    text-decoration: none;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.header-menu a:hover {
+    color: #f0f0f0;
+}
+
+/* Typography */
+.big-heading {
+    font-family: 'Bebas Neue', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: #9ecbf5;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    margin-bottom: 0px;
+}
+
+.normal-text {
+    font-family: 'Arsenal', serif;
+    font-size: 16px;
+    color: #5b5b5b;
+    margin-bottom: 20px;
+}
+
+/* Home page */
+.home-background {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.4)),
+                url('water_money.png') no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative; /* For absolutely positioned children */
+}
+
+.home-content {
+    background: rgba(255, 255, 255, 0.9);
+    width: 50%; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    margin-left: 30px;
+    margin-top: -120px;
+    padding: 10px 30px 30px 30px;
+}
+
+.sustainability-text {
+    font-family: 'Arsenal', serif;
+    font-weight: bold;
+    color: #f3f6f4;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2), 2px 2px 0px rgba(0,0,0,0.1);
+    font-style: italic;
+    width: auto; 
+    text-align: right;
+    position: absolute; 
+    right: 30px; 
+    bottom: 90px;
+}
+
+.sustainability-text h2 {
+    font-size: 36px;
+    font-family: 'Arsenal', serif;
+    font-weight: bold;
+    color: #f3f6f4;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2), 2px 2px 0px rgba(0,0,0,0.1);
+    font-style: italic;
+    text-align: right;
+}
+
+/* Dashboard page */
+.dashboard-description {
+    font-family: 'Garamond', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #606060;
+    text-align: justify;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.dashboard-description::first-letter {
+    font-size: 36px;
+    line-height: 1;
+    font-weight: bold;
+    float: left;
+    padding-right: 8px;
+    color: #3c8dbc;
+}
+
+.ui.dashheader {
+    font-size: 30px;
+    font-family: 'Anton', sans-serif; 
+    color: #504f4f;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+/* Box styles */
+.box {
+    border-top: 3px solid #3c8dbc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 3px;
+}
+
+.box-header {
+    color: #444;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #f4f4f4;
+    font-weight: bold; /* Added for emphasis */
+}
+
+.box-body {
+    padding: 15px;
+}
+
+/* select input styles */
+#municipality {
+    width: 100%; 
+    margin-bottom: 10px;
+}
+
+/* button styles */
+#reset_municipality {
+    background-color: #73aed1; 
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#reset_municipality:hover {
+    background-color: #3c8dbc;
+}
+
+/* Button styles */
+.ui.button {
+    background-color: #3c8dbc;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.button-container .ui.button {
+    margin-right: 10px;
+}
+
+.ui.button:hover {
+    background-color: #367fa9;
+}
+
+
+/* Learn More page */
+.learn-more-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.learn-more-container a {
+    color: #555;
+    font-family: 'Arsenal', serif;
+    text-decoration: none;   
+    border-bottom: 1px solid #ccc;   
+    padding-bottom: 2px; 
+    font-weight: bold;
+    display: inline-block; 
+    width: 100%; 
+    max-width: 600px;
+}
+
+/* Font style for Resources on Affordability Metrics */
+.resources-container h2 {
+    color: #7BAE45;  
+    font-size: 20px;  
+    font-family: 'Arial', sans-serif;
+    padding-bottom: 10px;
+    display: inline-block;  
+    font-weight: bold;
+}
+
+.learn-more-container ul {
+    padding-left: 20px;
+}
+
+.learn-more-container li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.article-item {
+    list-style-type: none;
+}
+
+.toggle-icon {
+    font-size: 16px;
+    color: #7BAE45; /* Green color */
+}
+
+.title-link {
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+.title-link:hover {
+    text-decoration: underline;
+}
+
+/* Mission Quote section */
+.quote-container {
+    text-align: center;
+    margin: 40px 0;
+    padding: 20px;
+    background-color: white;
+    font-family: 'Arsenal', sans-serif;
+    color: #333;
+}
+
+.quote-content {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.quote-content p {
+    font-size: 24px;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.quote-author {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+
+.quote-content::before, .quote-content::after {
+    content: '"';
+    font-size: 48px;
+    color: #ccc;
+    position: absolute;
+    line-height: 1;
+}
+
+.quote-content::before {
+    top: -20px;
+    left: -15px;
+}
+
+.quote-content::after {
+    bottom: -40px;
+    right: -15px;
+}
+
+/* Contributors section */
+.contributors-container h2 {
+    color: #666; 
+    font-size: 22px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    border-bottom: 2px solid #666;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.contributor {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.contributor-image {
+    width: 120px;
+    height: 130px;
+    border-radius: 50%; 
+    object-fit: cover;
+    margin-bottom: 15px; 
+}
+
+.contributor h3 {
+    font-size: 15px;
+    color: #666;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+
+.contributor p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #666;
+}
+
+/* Footer styles */
+.footer {
+    background-color: #333;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px 0;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer-logo-info {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-logo-section img {
+    height: 40px;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px; 
+    align-items: flex-start;
+}
+
+.footer-address, .footer-contact {
+    margin-bottom: 0px;
+}
+
+.footer-address i, .footer-contact i {
+    margin-right: 10px;
+}
+
+.footer-follow h4, .footer-links h4 {
+    margin-bottom: 10px;
+    margin-top: 0px;
+    font-family: 'Merriweather', serif;
+}
+
+.footer-social-icons a {
+    margin-right: 10px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 5px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-social-icons img {
+    height: 40px;
+}
+
+.footer-social-icons a {
+    display: inline-block;
+    filter: brightness(0) invert(1);
+}
+
+.footer-links {
+    position: relative;
+    left: -50px; 
+}
+
+.footer-follow {
+    position: relative;
+    left: -100px; 
+}
+
+/* Map styles */
+.leaflet-container {
+    height: 400px; 
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-links, .footer-follow, .footer-logo-info {
+        position: static;
+        left: 0;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .footer-links ul, .footer-follow h4 {
+        text-align: center;
+    }
+
+    .header-menu {
+        display: none; 
+    }
+
+    .home-content {
+        width: 80%;
+        margin-left: 10%;
+        margin-top: -100px;
+    }
+
+    .sustainability-text {
+        right: 10px;
+        bottom: 50px;
+        font-size: 24px;
+    }
+
+    /* Adjust columns for dashboard on small screens */
+    .ui.grid > .column {
+        width: 100% !important;
+    }
+}
+
