@@ -1,6 +1,7 @@
 During my role as a Data Research Assistant at the Environmental Finance Center at the University of North Carolina (UNC), I independently developed a water rate affordability analysis dashboard using **R Shiny**. As the primary developer, I designed the **complete UI, including navigation bars, home page display, dashboards, data tables, and visualizations**. Due to confidentiality, specific code cannot be disclosed.
 <img width="2000" height="1535" alt="image" src="https://github.com/user-attachments/assets/a6f455bf-d0a1-41cb-92d1-debed6dd16b8" />
 <img width="2000" height="1535" alt="image" src="https://github.com/user-attachments/assets/390031f7-dea1-4b49-80cc-89a2a81e1c97" />
+<img width="2000" height="1535" alt="image" src="https://github.com/user-attachments/assets/db39acaf-6e69-42cc-b4c5-c2fbff7a6180" />
 
 The dashboard utilizes **R Shiny’s ui and server architecture**, integrating data visualization libraries like leaflet for mapping and ggplot2 for analytics. Its core features include a **municipal unit selector, geographic distribution maps, and interactive data analysis charts**. I also optimized the user interface by **applying custom CSS**, ensuring a smooth user experience and intuitive design.
 
